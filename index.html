@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CADIT Resource Hub</title>
+<style>
+:root {
+  --ink: #163247;
+  --muted: #526b7a;
+  --paper: #f0f9ff;
+  --card: #ffffff;
+  --line: #bae6fd;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --navy: #123b5d;
+  --navy2: #1b5f85;
+  --blue: #38bdf8;
+  --sky: #7dd3fc;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e8f4fa;
+    --muted: #a3bbc9;
+    --paper: #0e1722;
+    --card: #15212e;
+    --line: #273f50;
+    --accent: #38bdf8;
+    --accent-soft: #16364a;
+    --navy: #071b30;
+    --navy2: #103b5c;
+    --blue: #38bdf8;
+    --sky: #7dd3fc;
+  }
+}
+
+/* Global */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.55 "Segoe UI", system-ui, sans-serif;
+}
+
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+
+/* Header */
+.top {
+  background: linear-gradient(135deg, var(--navy), var(--navy2));
+  border-bottom: 4px solid var(--sky);
+  color: #ffffff;
+  padding-top: 18px;
+}
+
+.brandrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.brand { display: flex; align-items: center; gap: 14px; }
+
+.logo { height: 38px; background: #ffffff; padding: 4px 8px; border-radius: 4px; }
+
+.logo-text {
+  background: #ffffff;
+  color: var(--navy);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+.brand-sep { width: 1px; height: 30px; background: rgba(255, 255, 255, 0.35); }
+
+.top h1 { margin: 0; color: #ffffff; font-size: 1.3rem; font-weight: 600; letter-spacing: -0.01em; }
+
+/* Subtitle only (nested lists now use .sublist) */
+.sub { margin: 8px 0 0; color: var(--muted); max-width: 60ch; }
+.top .sub { color: #c7e7fa; font-size: 0.9rem; }
+
+/* Search (with icon) */
+.search { position: relative; display: block; }
+.top .search { flex: 1 1 320px; max-width: 520px; }
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+.top .search-icon { color: #c7e7fa; }
+
+.search input {
+  width: 100%;
+  max-width: 520px;
+  padding: 10px 14px 10px 38px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.top .search input {
+  min-width: 280px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.top .search input::placeholder { color: #c7e7fa; }
+.search input:focus { border-color: var(--sky); }
+
+.search input:focus,
+.tab:focus-visible,
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--sky);
+  outline-offset: 2px;
+}
+
+.sr { position: absolute; left: -9999px; }
+
+/* Navigation tabs */
+#tabs { display: flex; gap: 4px; margin-top: 10px; overflow-x: auto; }
+
+.tab {
+  font: inherit;
+  font-weight: 600;
+  color: #c7e7fa;
+  background: none;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  padding: 10px 18px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.tab:hover { color: #ffffff; }
+.tab[aria-selected="true"] { color: #ffffff; border-bottom-color: var(--sky); }
+.top .tab:focus-visible { outline-color: #ffffff; }
+
+.cnt { margin-left: 4px; font: 0.75rem ui-monospace, Consolas, monospace; opacity: 0.7; }
+
+/* Main content */
+main { padding-top: 28px; padding-bottom: 40px; outline: 0; }
+
+.intro { color: var(--muted); margin: 16px 0 24px; max-width: 70ch; }
+.partner-label { margin: 28px 0 4px; font-size: 1.05rem; }
+.band { margin: 32px 0 12px; font-size: 1.1rem; }
+.band small { font: 0.8rem ui-monospace, Consolas, monospace; color: var(--muted); font-weight: 400; margin-left: 8px; }
+
+/* Resource groups */
+.groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+
+.group {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.group:hover { border-color: var(--sky); box-shadow: 0 3px 12px rgba(56, 189, 248, 0.08); }
+.group h3 { margin: 0 0 4px; font-size: 1.05rem; }
+.group .note { margin: 0 0 10px; color: var(--muted); font-size: 0.9rem; }
+.group ul { list-style: none; margin: 0; padding: 0; }
+.group li { border-top: 1px solid var(--line); padding: 8px 0; }
+.group a { color: var(--accent); font-weight: 600; text-decoration: none; }
+.group a:hover { color: var(--blue); text-decoration: underline; }
+.group h3 a.all { color: var(--ink); text-decoration: underline; text-decoration-color: var(--sky); text-underline-offset: 3px; }
+.group h3 a.all:hover { color: var(--accent); }
+.group .desc { display: block; color: var(--muted); font-size: 0.88rem; }
+
+.todo {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 0 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 10px;
+}
+
+.empty { color: var(--muted); padding: 24px 0; }
+li.empty { color: var(--muted); font-size: 0.9rem; border-top: 0; }
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn:hover { background: var(--navy2); border-color: var(--navy2); }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn.pending { background: var(--card); color: var(--ink); border: 1px dashed var(--line); }
+
+@media (prefers-color-scheme: dark) {
+  .btn { color: #071b30; }
+  .btn:hover { color: #ffffff; }
+  .btn.pending { color: var(--ink); }
+}
+
+/* Notices */
+.notice {
+  margin: 0 0 20px;
+  padding: 12px 16px;
+  background: var(--accent-soft);
+  border-left: 4px solid var(--sky);
+  border-radius: 4px;
+  max-width: 80ch;
+}
+
+.title { font-weight: 600; }
+
+/* Expandable sections (nested list is .sublist, not .sub) */
+summary { cursor: pointer; font-weight: 600; color: var(--accent); padding: 2px 0; }
+details > .desc { margin-top: 2px; }
+
+.sublist {
+  margin: 8px 0 0 14px !important;
+  padding-left: 12px !important;
+  border-left: 2px solid var(--sky);
+}
+.sublist li { border-top: 0 !important; padding: 4px 0 !important; }
+.own a { font-weight: 400 !important; text-decoration: underline !important; }
+
+/* Resource cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; margin-bottom: 28px; }
+
+.card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+a.card:hover { border-color: var(--sky); }
+.card strong { display: block; color: var(--accent); }
+.card.pending strong { color: var(--ink); }
+.card .desc { margin-top: 2px; }
+
+/* Home hero */
+.hero {
+  margin-top: 32px;
+  background: linear-gradient(135deg, var(--card) 0%, var(--accent-soft) 100%);
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--sky);
+  border-radius: 10px;
+  padding: 28px 32px;
+  margin-bottom: 8px;
+}
+.hero .date { margin: 0; font: 0.8rem ui-monospace, Consolas, monospace; letter-spacing: 0.12em; color: var(--muted); }
+.hero h2 { margin: 6px 0; font-size: 2.4rem; color: var(--navy); }
+.hero p:last-child { margin: 0; color: var(--muted); max-width: 60ch; }
+@media (prefers-color-scheme: dark) { .hero h2 { color: #e8f4fa; } }
+
+/* Home cards */
+.hcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+
+.hcard {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.hcard:hover { border-color: var(--sky); box-shadow: 0 2px 10px rgba(56, 189, 248, 0.15); }
+.hcard > a { display: block; padding: 14px 40px 14px 16px; color: var(--ink); text-decoration: none; height: 100%; }
+.hcard strong { display: block; color: var(--ink); }
+.hcard .desc, .pcard .desc, .panel .desc { display: block; color: var(--muted); font-size: 0.88rem; }
+
+/* Tags */
+.tag {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 1px 8px;
+  font: 0.7rem ui-monospace, Consolas, monospace;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 3px;
+}
+
+/* Pin buttons */
+.pin { position: absolute; top: 10px; right: 10px; background: none; border: 0; font-size: 1.1rem; color: var(--muted); cursor: pointer; line-height: 1; }
+.pin:hover, .pin[aria-pressed="true"] { color: #e0a100; }
+
+/* Chips (Home departments and Ansys sections) */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+
+.chip {
+  font: inherit;
+  font-weight: 600;
+  padding: 6px 16px;
+  color: var(--accent);
+  background: var(--card);
+  border: 1px solid var(--sky);
+  border-radius: 20px;
+  cursor: pointer;
+}
+.chip:hover { border-color: var(--accent); }
+.chip[aria-pressed="true"] { color: #ffffff; background: var(--accent); border-color: var(--accent); }
+@media (prefers-color-scheme: dark) { .chip[aria-pressed="true"] { color: #071b30; background: var(--accent); } }
+
+/* Two-column layout */
+.duo { display: grid; grid-template-columns: 1fr 1.5fr; gap: 16px; margin-top: 32px; align-items: start; }
+@media (max-width: 760px) { .duo { grid-template-columns: 1fr; } }
+
+/* Panels */
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px 20px; }
+.panel h3 { display: flex; justify-content: space-between; margin: 0 0 10px; font-size: 1.05rem; }
+.panel h3 span { font: 0.8rem ui-monospace, Consolas, monospace; color: var(--muted); }
+
+.pinlist, .notices { list-style: none; margin: 0; padding: 0; }
+.pinlist li { padding: 6px 0; border-top: 1px solid var(--line); }
+.pinlist a { color: var(--accent); font-weight: 600; text-decoration: none; }
+.notices li { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+.notices li:first-child, .pinlist li:first-child { border-top: 0; }
+
+.ntag {
+  flex: none;
+  align-self: flex-start;
+  padding: 1px 8px;
+  font: 0.7rem ui-monospace, Consolas, monospace;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 3px;
+}
+.notices p { margin: 2px 0 0; color: var(--muted); font-size: 0.92rem; }
+
+/* Partner cards: flex column so every title sits at the same height */
+.pcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+
+.pcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--sky);
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.pcard:hover { border-color: var(--sky); box-shadow: 0 2px 10px rgba(56, 189, 248, 0.12); }
+.pcard strong { display: block; font-size: 1.15rem; padding-right: 40px; }
+.pcount { position: absolute; top: 16px; right: 16px; font: 0.8rem ui-monospace, Consolas, monospace; color: var(--muted); }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 12px; }
+.pill { font: 0.72rem ui-monospace, Consolas, monospace; padding: 2px 10px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); }
+
+/* Footer */
+.foot { color: var(--muted); font-size: 0.85rem; padding-bottom: 32px; }
+
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brandrow">
+      <div class="brand">
+        <img class="logo" src="data:image/png;base64,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" alt="CADIT" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'logo-text',textContent:'CADIT'}))">
+        <span class="brand-sep"></span>
+        <h1>Resource Hub</h1>
+      </div>
+      <label class="search">
+        <span class="sr">Search resources</span>
+        <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="q" type="search" placeholder="Search all resources, e.g. portal, learning, case study">
+      </label>
+    </div>
+    <p class="sub">CADIT and its partner resources.</p>
+  </div>
+  <nav class="wrap" aria-label="Sections"><div id="tabs" role="tablist"></div></nav>
+</header>
+<main class="wrap" id="content" tabindex="-1"></main>
+<footer class="wrap foot">Only approved, non-sensitive resources are published here.</footer>
+<script>
+const ANSYS = {
+  portal:        "https://synopsyspartners.sharepoint.com/sites/ANSYSChannelPartnerPortal",   // Ansys Channel Partner Portal (main landing page)
+  learningHub:   "https://learninghub.ansys.com/learn/signin",  // Ansys Learning Hub (ALH)
+  calendar:      "https://synopsyspartners.sharepoint.com/sites/ANSYSChannelPartnerPortal/_layouts/15/Events.aspx?ListGuid=e9ec5bea-783c-45f3-8f77-7a82414a3270&AudienceTarget=false",   // Training & Event Calendar (Ansys main page > right-side menu)
+  salesTools:    "https://synopsyspartners.sharepoint.com/sites/cpsrc/SitePages/Channel-Partner-Sales-Tools.aspx",   // Sales Tools (Ansys main page > right-side menu)
+  support:       "https://ansys.synopsys.com/support",   // How to Get Product Support (Ansys main page > right-side menu)
+  r1Training:    "https://synopsyspartners.sharepoint.com/sites/SalesContent_Ansys/_layouts/15/Events.aspx",   // 2026 R1 Training (Ansys main page > right-side menu)
+  r1Highlights:  "https://synopsyspartners.sharepoint.com/sites/SalesContent_Ansys/SitePages/2026-R1-Release-Highlights.aspx",   // 2026 R1 Release Highlights (Training top cards / Sales quick links)
+  pricing:       "https://synopsyspartners.sharepoint.com/sites/Pricing",   // Ansys Pricing / Pricing & Promotions
+  dealReg:       "https://synopsyspartners.sharepoint.com/sites/cpo/SitePages/Deal-Registration.aspx",   // Deal Registration
+  dealDesk:      "https://synopsyspartners.sharepoint.com/sites/GlobalDealDesk2",   // Global Deal Desk
+  academic:      "https://synopsyspartners.sharepoint.com/sites/AcademicProgram9",   // Academic Program
+  startup:       "https://synopsyspartners.sharepoint.com/sites/StartupProgramSite2",   // Startup Program site
+  salesTraining: "https://synopsyspartners.sharepoint.com/sites/cpst",   // Sales Training page
+  bestPractices: "https://synopsyspartners.sharepoint.com/sites/cpsrc/SitePages/SalesBestPracticesChannelAmerica.aspx",   // Channel Sales Best Practices (banner on Sales page)
+  salesGPT:      "https://salesgpt.ansys.com/",   // Sales GPT
+  marketIQ:      "https://synopsyspartners.sharepoint.com/sites/Sales/SitePages/GTM-Strategy-%26-Transformation.aspx",
+  customerPortal: "https://support.ansys.com/Home/Index"    // Market IQ
+};
+
+const HUB = [
+
+  // ---------------------------------------------------------
+  {
+    id: "cadit", name: "CADIT",
+    home: { title: "Open cadit.com", url: "https://www.cadit.com/" },
+    intro: "Resources that belong to CADIT. Website links come from www.cadit.com; documents are linked from SharePoint.",
+      featured: {
+    title: "Frequently Used Resources",
+    items: [
+      {
+        title: "Vault",
+        url: "https://vault.caditglobal.com",
+        desc: "CADIT internal document repository"
+      }
+    ]
+  },
+
+    groups: [
+      { name: "Products",
+        items: [
+          { title: "All products on cadit.com", url: "https://www.cadit.com/products", desc: "Full product list" },
+          { title: "Ansys products", url: "https://www.cadit.com/products?vendor=ansys", desc: "Ansys for ASEAN and China, trials on request" },
+          { title: "Ansys training courses", url: "https://www.cadit.com/products?vendor=cadit-training", desc: "CFD, FEA, EM, Optics, Photonics and more" },
+          { title: "PTC products", url: "https://www.cadit.com/products?vendor=ptc", desc: "Windchill, Thingworx and more" },
+          { title: "NodeLinx (IIOT)", url: "https://www.cadit.com/solutions/industrial-internet-of-things", desc: "Customizable IIOT applications" },
+          { title: "EdgeLinx Telematics", url: "https://www.cadit.com/telematics", desc: "Fleet and asset management" },
+          { title: "Autodesk Moldflow", url: "https://www.autodesk.com/products/moldflow/features", desc: "Offered for China" },
+        ] },
+      { name: "Solutions", note: "CADIT solution areas and their related resources.",
+        items: [
+          // FIX C1: i4 Centre now points to the AI Data Centre site.
+          { title: "AI Data Centre", url: "https://aidatacentre.org/", desc: "AI data centre solutions" },
+          // The Industrial IoT page and its NodeLinx links now sit under their own correct label.
+          { title: "Industrial IoT (NodeLinx)", url: "https://www.cadit.com/solutions/industrial-internet-of-things", desc: "Industrial IoT solutions, including NodeLinx",
+  children: [
+              { title: "NodeLinx Energy Monitoring", url: "https://www.cadit.com/solutions/nodelinx-energy-monitoring" },
+              { title: "NodeLinx Equipment Performance Monitoring", url: "https://www.cadit.com/solutions/nodelinx-equipment-performance-monitoring" },
+              { title: "NodeLinx Integrated Data Center Management", url: "https://www.cadit.com/solutions/nodelinx-integrated-data-center-management" },
+              { title: "EdgeLinx Telematics Management Suite", url: "https://www.cadit.com/telematics" }
+            ] },
+          { title: "CAE", url: "https://www.cadit.com/solutions/computer-aided-engineering", desc: "Ansys engineering simulation" },
+          { title: "PLM", url: "https://www.caditaus.com.au/supporting-technologies/windchill/", desc: "PTC Windchill (CADIT Australia)" },
+          { title: "AR / XR", url: "https://cadituk.com/mixed-reality/", desc: "NodeLinx Mixed Reality (CADIT UK)" },
+          { title: "SLM", url: "https://cadituk.com/service-lifecycle-management/", desc: "Siemens SLM (CADIT UK)" },
+          { title: "ALM", url: "https://www.caditaus.com.au/supporting-technologies/codebeamer/", desc: "PTC Codebeamer (CADIT Australia)" },
+        ] },
+      { name: "Customer Success Stories",
+        items: [
+          { title: "BRIN: Multiphase Flow in Porous Rocks", url: "https://caditglobalcom-my.sharepoint.com/:b:/r/personal/haja_johana_cadit_com/Documents/CADIT%20Marketing/Marketing%20Materials/CADIT%20ID/Testimonials/Customer%20Testimonial-Yusron%20Feriadi-BRIN.pdf?d=w560e283e432a42618e9073876bdf2b71&csf=1&web=1&e=Ev3aoK" }
+        ] },
+      { name: "Training Materials",
+        items: [
+          { title: "MY Training Catalog 2026", url: "https://caditglobalcom-my.sharepoint.com/:b:/r/personal/haja_johana_cadit_com/Documents/CADIT%20Marketing/Marketing%20Materials/CADIT%20MY/MY%20Training%20Catalog%20All%202026.pdf?d=w576a2125a93845149261a231f9781b9f&csf=1&web=1&e=crlgiZ" }
+        ] },
+      { name: "Brochures",
+        items: [
+          { title: "CADIT Company Brochure (Half Fold, PDF)", url: "https://caditglobalcom-my.sharepoint.com/:b:/r/personal/haja_johana_cadit_com/Documents/CADIT%20Marketing/Marketing%20Materials/CADIT%20TH/Half%20Fold%20Brochure.pdf?d=wb0d9ff8910344c34a5a5eff721d66fe8&csf=1&web=1&e=5KioVc" },
+          { title: "CADIT Company Brochure (Trifold, PDF)", url: "https://caditglobalcom-my.sharepoint.com/:b:/r/personal/haja_johana_cadit_com/Documents/CADIT%20Marketing/Marketing%20Materials/CADIT%20TH/Trifold%20brochure.pdf?d=w23e16a1ffdc44a279624aa86e95857ad&csf=1&web=1&e=YUGbg0" }
+        ] },
+      { name: "Other Resources", note: "Approved items that fit no other group.",
+        items: [
+          { title: "Services", url: "https://www.cadit.com/services/consult", desc: "Consult, Deploy, Train, Support",
+            children: [
+              { title: "Consult", url: "https://www.cadit.com/services/consult" },
+              { title: "Deploy", url: "https://www.cadit.com/services/deploy" },
+              { title: "Train", url: "https://www.cadit.com/services/train" },
+              { title: "Support", url: "https://www.cadit.com/services/support" }
+            ] },
+          { title: "Regional CADIT sites", url: "https://www.cadit.com/", desc: "UK / US, Australia, China, Korea, Thailand",
+            children: [
+              { title: "UK / US", url: "https://cadituk.com/" },
+              { title: "Australia", url: "https://www.caditaus.com.au/" },
+              { title: "China", url: "https://cadit.com.cn/" },
+              { title: "Korea", url: "https://www.caditkr.com" },
+              { title: "Thailand", url: "https://cadit.co.th/" }
+            ] },
+          { title: "Blog", url: "https://www.cadit.com/blog", desc: "News and articles" },
+          { title: "Events", url: "https://events.caditglobal.com/", desc: "Upcoming and past events" },
+          { title: "About CADIT", url: "https://www.cadit.com/about" },
+          { title: "Careers", url: "https://www.cadit.com/about/careers" },
+          { title: "Contact", url: "https://www.cadit.com/contact", desc: "sales@cadit.com, +65 6508 7575" }
+        ] }
+    ]
+  },
+
+  // ---------------------------------------------------------
+  // ANSYS: structure 
+ {
+  id: "ansys",
+  name: "Ansys",
+  home: {
+    title: "Open Ansys on cadit.com",
+    url: "https://www.cadit.com/products?vendor=ansys"
+  },
+  homeExtra: { title: "Ansys Customer Portal", url: ANSYS.customerPortal },
+  intro: "Ansys resources for CADIT.",
+   notice: "Ansys links may require a Synopsys partner account. For access, contact your department's manager or Ansys/Synopsys contact for guidance: Sales, Technical, Operations, or Marketing.",
+    // ===== FREQUENTLY USED RESOURCES =====
+    featured: { title: "Frequently Used Resources", items: [
+      { title: "Ansys Learning Hub", url: ANSYS.learningHub, desc: "Training and learning plans" },
+      { title: "Training & Events", url: ANSYS.calendar, desc: "Training and event calendar" },
+      { title: "Sales Tools", url: ANSYS.salesTools, desc:"Access sales enablement tools, partner resources, and essential sales references." },
+      { title: "Product Support", url: ANSYS.support, desc: "How to get product support" },
+      { title: "Partner Portal", url: ANSYS.portal, desc: "Ansys Channel Partner Portal" },
+      { title: "Partner Certification", url: "https://webapps.ansys.com/partnerscertification/Profile/MyProfile", desc: "Ansys Partner Certification Program" },
+      { title: "AnsysGPT", url: "https://ansysgpt.ansys.com/", desc: "AI assistant for Ansys-related technical questions, product information, and simulation guidance." },
+      { title:"Salesforce CRM", url:"https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Salesforce-SFDC.aspx", desc:"Manage customer information, sales opportunities, accounts, and customer interactions."}
+    ] },
+
+    // ===== EXPLORE ANSYS RESOURCES (four sections, shown as chips; the first one opens by default) =====
+    sectionsTitle: "Explore Ansys Resources",
+    sections: [
+
+      // ---------------- SALES ----------------
+      { id: "sales", name: "Sales", desc: "Onboarding, training, regional sales, tools",
+        intro: "Sales enablement resources, including onboarding, training, regional sales materials, planning templates, and key sales tools.",
+        groups: [
+                    { name: "Sales: APAC", items: [
+            { title: "Sales - APAC Technical Resource Request Process", url: "https://synopsyspartners.sharepoint.com/sites/cptrc/SitePages/APAC.aspx" }
+          ] },
+          { name: "Sales Onboarding", note: "Onboarding and learning plans are inside the Ansys Learning Hub.", items: [
+            { title: "Ansys Learning Hub", url: ANSYS.learningHub, desc: "Sign in, then open Learning Plans." }
+          ] },
+
+          { name: "Sales Training", items: [
+          
+            { title: "New Hire Sales Training", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Ansys-New-Hire-Sales-Training-Program.aspx" },
+            { title: "Sales 101", url: "https://synopsyspartners.sharepoint.com/sites/cpst/SitePages/Sales-101.aspx" },
+            { title: "Industry 101: Solution by Industry", url: "https://synopsyspartners.sharepoint.com/sites/cptrc/SitePages/Industry-Training-Resources.aspx" },
+          ] },
+          { name: "Sales Content Site", note: "Synopsys X Ansys: Sales Kits, 2026 R1 Release, Product Content, Industry Content, Global Partnerships and Programs, Channel Partner Marketing Content, Site Admin Resources", items: [
+            { title: "Sales Content Site (home)", url: "https://synopsyspartners.sharepoint.com/sites/SalesContent_Ansys" },
+            { title: "Sales Kits: Synopsys & Ansys Co-Selling", url: "https://synopsyspartners.sharepoint.com/sites/SalesContent_Ansys/SitePages/Synopsys-%26-Ansys-Co-Selling---Product-%26-Solutions-Sales-Kits.aspx" },
+            { title: "GTM FAQ", url: "https://synopsyspartners.sharepoint.com/sites/SalesContent_Ansys/SitePages/Integration/FAQ.aspx" },
+            { title: "Sales Pitch Deck Templates", url: "https://synopsyspartners.sharepoint.com/sites/SalesContent_Ansys/SitePages/Ansys-Standard-Sales-Pitch-Resource-Center.aspx" },
+            { title: "Customer Stories & References", url: "https://synopsyspartners.sharepoint.com/sites/SalesContent_Ansys/SitePages/Modern-Search.aspx?f=%5b%7b%22filterName%22%3a%22RefinableString03%22%2c%22values%22%3a%5b%7b%22name%22%3a%22Customer%20Story/Reference%22%2c%22value%22%3a%22%5c%22%C7%82%C7%82437573746f6d65722053746f72792f5265666572656e6365%5c%22%22%2c%22operator%22%3a0%7d%5d%2c%22operator%22%3a%22or%22%7d%5d" },
+            { title: "2026 R1 Release Industry Marketing Presentation", url: "https://synopsyspartners.sharepoint.com/:p:/r/sites/SalesContent_Ansys/_layouts/15/Doc.aspx?sourcedoc=%7B24570124-92D9-4C83-93F0-4DE5D3CB572B%7D&file=Industry%20Marketing%20-%20R1%202026%20Release%20Deck%20-%20April%202026.pptx&action=edit&mobileredirect=true" },
+            { title: "Document Library (EN)", url: "https://synopsyspartners.sharepoint.com/sites/SalesContent_Ansys/Shared%20Documents/Forms/All%20Documents%202214.aspx?FolderCTID=0x012000513090E67806874996CF4E9F4A226255&id=%2Fsites%2FSalesContent%5FAnsys%2FShared%20Documents%2FEnglish%20Content%20%28EN%29" },
+            // FIX C4: Campaign Kits had the same link as Document Library (EN).
+            // Replace "#" with the real Campaign Kits link. Until then it shows "link to add".
+            { title: "Campaign Kits", url: "https://synopsyspartners.sharepoint.com/sites/ChannelMarketingResourceCenter/SitePages/Campaigns-in-aBox.aspx" },
+            { title: "How to Use This Site", url: "https://synopsyspartners.sharepoint.com/sites/SalesContent_Ansys/SitePages/SiteInstructions.aspx" }
+          ] },
+
+          { name: "Selling at Ansys: New Hire Sales Training", note: "Learning content from the Selling at Ansys site.", items: [
+              { title: "Ansys New Hire Sales: The Basics", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Sales-New-Hire--The-Basics.aspx" },
+            { title: "Sales Essentials", url: "", desc: "Sales process, presentation, products, discovery",
+              children: [
+                { title: "Ansys Sales Process", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/AnsysSalesProcess.aspx" },
+                { title: "Ansys Sales Presentation", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Ansys-Sales-Presentation.aspx" },
+                { title: "Ansys Products", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Portfolio.aspx" },
+                { title: "Discovery Skills", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Discovery-Skills.aspx" },
+              ] },
+            { title: "Selling Methodologies", url: "", desc: "8 Pillars of Growth, MEDDIC, messaging, metrics",
+              children: [
+                { title: "Driving the 8 Pillars of Growth", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Driving-The-8-Pillars-of-Growth.aspx" },
+                { title: "Command of the Message", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Command-of-the-Message.aspx" },
+                { title: "MEDDIC", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/MEDDIC.aspx" },
+                { title: "Value Negotiation", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Value-Negotiation.aspx" },
+                { title: "Understanding Metrics", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Metrics.aspx" }
+              ] },
+            { title: "Sales Strategy & Teamwork", url: "", desc: "Solutions selling, reviews, senior access",
+              children: [
+                { title: "Selling Solutions", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Selling-Solutions.aspx" },
+                { title: "Opportunity Reviews", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Opportunity-Review.aspx" },
+                { title: "Gaining Access to Senior Management (CXOs)", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Gaining-Access-to-Senior-Management-(CXOs).aspx" },
+                { title: "N&ET: Sales Specialists", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Overlays-%26-Product-Experts.aspx#summary-the-power-of-one-ansys" }
+              ] },
+              { title: "Mastering Financial Acumen for Sales", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Sales-Mini-MBA.aspx" },
+              { title: "Company Assessments", url: "https://synopsyspartners.sharepoint.com/:p:/r/sites/SellingatAnsys/_layouts/15/Doc.aspx?sourcedoc=%7B7979D428-1768-4F4A-A407-2950B5811F6D%7D&file=Company-Simulation%20Assessments%20-05112022_TAMSummit2022_Assessments.pptx&action=edit&mobileredirect=true" },
+
+            { title:"Site Pages", url:"https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/_layouts/15/SeeAll.aspx?Page=%2Fsites%2FSellingatAnsys%2FSitePages%2FHome.aspx&InstanceId=4e1226a4-4a04-45ce-a3ce-31d665383332"},
+          ] },
+           { name: "Planning Templates", note: "Territory, account and activity planning templates (originally on the Americas resource page).", items: [
+            { title: "Territory Planning Guide", url: "https://synopsyspartners.sharepoint.com/:p:/r/sites/cpsrc/_layouts/15/Doc.aspx?sourcedoc=%7B9BFFC0E9-CC9C-455E-99D5-8DD9F5EA28B8%7D&file=Territory%20Planning%20Guide.pptx&action=edit&mobileredirect=true", desc: "Territory profile and account segmentation" },
+            { title: "Territory Planning Worksheet", url: "https://synopsyspartners.sharepoint.com/:x:/r/sites/cpsrc/_layouts/15/Doc.aspx?sourcedoc=%7BE772E2E8-6C6E-4469-B333-99EAAC246BFF%7D&file=2025%20Channel%20Territory%20Planning%20Template%20Final.xlsx&action=default&mobileredirect=true" },
+            { title: "Account Planning Template", url: "https://synopsyspartners.sharepoint.com/:p:/r/sites/cpsrc/_layouts/15/Doc.aspx?sourcedoc=%7B4D6AA6CF-D75D-440F-A592-83CC825F81E9%7D&file=Momentum%20Account%20Plan%20Template%202025.pptx&action=edit&mobileredirect=true" },
+            { title: "Account Activity Tracker Template", url: "https://synopsyspartners.sharepoint.com/:x:/r/sites/cpsrc/_layouts/15/Doc.aspx?sourcedoc=%7B9D1FC1F5-10E9-4B74-9356-DF4DBE1F3A96%7D&file=AccountTrackerTemplateForChannelRev1March2022.xlsx&action=default&mobileredirect=true" },
+            { title: "Account Tracking (video)", url: "https://synopsyspartners.sharepoint.com/sites/cpsrc/_layouts/15/stream.aspx?id=%2Fsites%2Fcpsrc%2FChannel%20Partner%20Sales%20Resource%20Documents%20And%20Recor%2FAmericas%20Resources%20and%20Docs%2FAccountTrackerTemplate%2FHowToVideoAccountTracking%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2E0d5b07be%2D9b81%2D4866%2Db1d3%2D025847d85a5d" },
+            { title: "Customer Whitespace Review (Excel template)", url: "https://synopsyspartners.sharepoint.com/:x:/r/sites/cpsrc/_layouts/15/Doc.aspx?sourcedoc=%7B4F21B82D-FD0D-463D-B149-55F33CE9D40B%7D&file=AccountWhiteSpaceAutomatedTemplate.xlsx&action=default&mobileredirect=true" }
+          ] },
+
+          { name: "Sales: Americas", items: [
+            { title: "Core Sales Resources", url: "https://synopsyspartners.sharepoint.com/sites/cpsrc/SitePages/Channel-Sales-Americas---Resource-Page.aspx", desc: "Scroll down to last section for Americas Channel Partner Sales Documents & Recordings (document library)"},
+            { title: "Account Lookup Tool", url: "https://synopsyspartners.sharepoint.com/sites/cpsrc/SitePages/Account-Lookup.aspx" },
+            { title: "Marketing Events & Webinars", url: "https://www.ansys.com/events#t=EventsTab&sort=date%20descending&numberOfResults=20" },
+          ] },
+
+
+          { name: "Sales: EMEA", items: [
+            { title: "Channel Sales Forum", url: "https://synopsyspartners.sharepoint.com/sites/cpsrc/SitePages/Channel-Sales-Forum.aspx" },
+            { title: "Sales Manager Round Table", url: "https://synopsyspartners.sharepoint.com/sites/cpsrc/SitePages/Sales-Manager-Round-Table.aspx" },
+            { title: "EMEA Documents & Recordings", url: "https://synopsyspartners.sharepoint.com/sites/cpsrc/SitePages/Sales-Development-EMEA.aspx", desc: "Scroll down to last section for EMEA Channel Partner Sales Documents & Recordings (document library)" }
+          ] },
+
+          { name: "Sales Tools & Quick Links", items: [
+            { title: "2026 R1 Release Highlights", url: ANSYS.r1Highlights },
+            { title: "Channel Sales Best Practices", url: ANSYS.bestPractices },
+            { title: "Ansys Pricing", url: ANSYS.pricing },
+            { title: "Deal Registration", url: ANSYS.dealReg },
+            { title: "Sales GPT", url: ANSYS.salesGPT },
+            { title: "Market IQ", url: ANSYS.marketIQ }
+          ] }
+        ] },
+
+      // ---------------- TECHNICAL ----------------
+      { id: "technical", name: "Technical", desc: "Training, ideas portals, technical resources, and documentation",
+        intro: "Access technical training, product resources, engineering support, technology updates, and documentation to support your technical work with Ansys products.",
+        groups: [
+          { name: "Technical", items: [
+            { title: "Training resources", url: "https://synopsyspartners.sharepoint.com/sites/cptt" },
+            { title: "New & Emerging Technologies", url: "https://synopsyspartners.sharepoint.com/sites/cptt/SitePages/Information-on-New-Products.aspx" },
+            { title: "Technical resources", url: "https://synopsyspartners.sharepoint.com/sites/cptrc" }
+          ] },
+          { name: "Ideas Portal Links", items: [
+            { title: "Structures Ideas Portal", url: "https://ansys-structures.ideas.aha.io/portal_session/new" },
+            { title: "Electronic Ideas Portal", url: "https://ansys-electronics.ideas.aha.io/portal_session/new" },
+            { title: "Material Ideas Portal", url: "https://ansys-materials.ideas.aha.io/portal_session/new" },
+            { title: "AI Ideas Portal", url: "https://ansys-simai.ideas.aha.io/portal_session/new" },
+            { title: "Fluids Ideas Portal", url: "https://ansys-fluids.ideas.aha.io/portal_session/new" },
+            { title: "3D Ideas Portal", url: "https://ansys-design.ideas.aha.io/portal_session/new" }
+          ] },
+          {
+            name:"Documents", items: [
+              { title: "Technical Documentation and Reference Materials", url: "https://synopsyspartners.sharepoint.com/sites/cptrc/_layouts/15/SeeAll.aspx?Page=%2Fsites%2Fcptrc%2FSitePages%2FHome.aspx&InstanceId=f078392e-7eed-43fc-93b2-92dda89bac3c", desc:"Find technical documentation and reference materials through the Ansys Technical Resource Center document library" }
+            ]
+
+          }
+        ] },
+
+      // ---------------- OPERATIONS ----------------
+      { id: "operations", name: "Operations", desc: "Deal operations, channel operations, commercial",
+        intro: "Operational resources for channel partners, covering deal management, channel operations, system access, pricing, and commercial processes.",
+        groups: [
+          { name: "Deal Operations", items: [
+                { title: "Deal Operations Home", url: "https://synopsyspartners.sharepoint.com/sites/DealOperations_Ansys/SitePages/Meet-the-Channel-Partner-Team.aspx" },
+                { title: "What's New: Channel Partners", url: "https://synopsyspartners.sharepoint.com/sites/DealOperations_Ansys/SitePages/What's-New---Channel-Partners.aspx?csf=1&web=1&e=wbbarq" },
+                { title: "CPQ Quote Review Checklist", url: "https://synopsyspartners.sharepoint.com/:x:/r/sites/DealOperations_Ansys/_layouts/15/Doc.aspx?sourcedoc=%7B775ECD50-0220-43FB-9C84-255C7AEA1761%7D&file=CPQ%20Quote%20Review%20Checklist.xlsx&action=default&mobileredirect=true" },
+                { title: "Channel Partner Order Processing Policy", url: "https://synopsyspartners.sharepoint.com/sites/DealOperations_Ansys/SitePages/Channel-Partner-Order-Processing-Policy.aspx" }
+          ] },
+          { name: "Channel Operations", items: [
+            { title: "2026 APEX, ELITE and SELECT Partners", url: "https://synopsyspartners.sharepoint.com/sites/cpo/SitePages/Ansys-Elite-Partners.aspx?web=1" },
+            { title: "Channel Capacity Update", url: "https://synopsyspartners.sharepoint.com/sites/cpo/SitePages/Elite-Channel-Partner-Program(1).aspx" },
+            { title: "CP Bundle License: 2026 Renewal", url: "https://synopsyspartners.sharepoint.com/sites/cpo/SitePages/License-Keys-for-Channel-Partners.aspx" },
+            { title: "System Access for Channel Partners", url: "https://synopsyspartners.sharepoint.com/sites/cpo/SitePages/System%20Access%20for%20Channel%20Partners.aspx" },
+            { title: "OPF Template", url: "https://synopsyspartners.sharepoint.com/sites/cpo/Shared%20Documents/OPF%20Template/OPF%20TEMPLATE_WW_updated01062026.docx" },
+          ] },
+          { name: "Deal and Commercial", items: [
+            { title: "Global Deal Desk", url: ANSYS.dealDesk },
+            { title: "Academic Program", url: ANSYS.academic },
+            { title: "Startup Program Site", url: ANSYS.startup }
+          ] }
+        ] },
+
+      // ---------------- MARKETING ----------------
+      { id: "marketing", name: "Marketing", desc: "Marketing center, events, logos, campaign kits",
+        intro: "Explore Ansys channel marketing resources, provide feedback to the marketing team, and connect with the people behind channel marketing.",
+        groups: [
+          { name: "Marketing", items: [
+                { title: "Channel Marketing Resource Center", url: "https://synopsyspartners.sharepoint.com/sites/ChannelMarketingResourceCenter", desc: "Scroll down to Meet The Faces Behind Channel Marketing"},
+                { title: "Events", url: "https://synopsyspartners.sharepoint.com/sites/ChannelMarketingResourceCenter/SitePages/Ansys-Live.aspx", desc: "Regional event calendars and event inquiry form" },
+                { title: "Ansys Logo & Icon Library", url: "https://synopsyspartners.sharepoint.com/sites/ChannelMarketingResourceCenter/SitePages/Ansys-Logo-+-Icon-Library.aspx" },
+                { title: "Partner Guidelines", url: "https://synopsyspartners.sharepoint.com/sites/ChannelMarketingResourceCenter/SitePages/Branding-Guidelines.aspx", desc: "MDF, branding, paid media" },     
+                  { title: "Feedback Form", url: "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=Z87GNLgV_06A6VLai-iXBuI6Zbcc5W1OqS7kMnijdFNUREZQMjZQUkQ1SzJDUVM4VzhSVkVZVU5ZOS4u", desc: "Submit your feedback to Ansys Marketing" },
+          ] }
+        ] }
+    ],
+  },
+
+  // ---------------------------------------------------------
+  {
+    id: "toffeex", name: "ToffeeX",
+    home: { title: "Contact CADIT about ToffeeX", url: "https://www.cadit.com/contact" },
+    intro: "ToffeeX through CADIT.",
+    groups: [
+       { name: "ToffeeX", items: [
+        {title:"Official ToffeeX website", url:"https://www.toffeex.com/"},
+      ] },
+      {
+        name:"Case Studies & Presentations", items: [
+          { title: "ToffeeX - How It Works, Advanced Cooling, Microchannels", url: "https://caditglobalcom.sharepoint.com/:b:/r/sites/MarkClerb/Marketing%20Hub/08_Partner%20Marketing/ToffeeX/ToffeeX%20Screens/ToffeeX%20%E2%80%93%20How%20It%20Works,%20Advanced%20Cooling,%20Microchannels.pdf?d=w9166c64be4a44416acbc8f2b832134ab&csf=1&web=1"},
+          { title: "ToffeeX Data Centre Examples", url: "https://caditglobalcom.sharepoint.com/:p:/r/sites/MarkClerb/Marketing%20Hub/08_Partner%20Marketing/ToffeeX/ToffeeX%20Screens/ToffeeX%20Data%20Centre%20Examples.pptx?d=w51c2dce6fc554609ae4d2f95d70d1c4f&csf=1&web=1" },
+          { title: "ToffeeX Electronics Cooling, Microchannel", url: "https://caditglobalcom.sharepoint.com/:p:/r/sites/MarkClerb/Marketing%20Hub/08_Partner%20Marketing/ToffeeX/ToffeeX%20Screens/ToffeeX%20Electronics%20Cooling,%20Microchannel.pptx?d=we127d1aa6f2f4fac8e4ff1656ea60a6d&csf=1&web=1" },
+        ]
+      }
+    ]
+  },
+
+  // ---------------------------------------------------------
+  // GT (Gamma Technologies): CADIT starts selling from 1 January 2027. More resources to be added.
+  {
+    id: "gt", name: "GT",
+    home: { title: "Open gtisoft.com", url: "https://www.gtisoft.com/" },
+    intro: "Gamma Technologies (GT) through CADIT.",
+    notice: "CADIT has signed an agreement with Gamma Technologies and will start selling their products from 1 January 2027. More resources will be added here soon.",
+    groups: [
+      { name: "Gamma Technologies", items: [
+        { title: "Official Gamma Technologies website", url: "https://www.gtisoft.com/" }
+      ] }
+    ]
+  },
+
+  // ---------------------------------------------------------
+  // OTHER PARTNERS: every link here comes from www.cadit.com
+  {
+    id: "partners", name: "Other Partners",
+    home: { title: "All partner products on cadit.com", url: "https://www.cadit.com/products" },
+    intro: "CADIT partners other than Ansys and ToffeeX. All links come from www.cadit.com.",
+    groups: [
+      { name: "PTC", note: "Total Systems Integrator since 2016.", items: [
+        { title: "PTC products", url: "https://www.cadit.com/products?vendor=ptc", desc: "Explore PTC for ASEAN and ANZ" },
+        { title: "Thingworx NodeLinx apps", url: "https://www.caditglobal.com/id/products/ptc-thingworx-manufacturing-apps", desc: "IIOT package" },
+        { title: "PTC Windchill (PLM)", url: "https://www.caditaus.com.au/supporting-technologies/windchill/" },
+        { title: "PTC Codebeamer (ALM)", url: "https://www.caditaus.com.au/supporting-technologies/codebeamer/" },
+        { title: "About PTC", url: "https://www.ptc.com/en/about", desc: "Linked from cadit.com" }
+      ] },
+      { name: "Autodesk Moldflow", items: [
+        { title: "Autodesk Moldflow", url: "https://www.autodesk.com/products/moldflow/features", desc: "Offered for China" }
+      ] },
+      { name: "monday.com", note: "CADIT is a monday.com Channel Partner.", items: [
+        { title: "monday.com products", url: "https://monday.com/" },
+        { title: "monday Evolve Singapore 2026", url: "https://www.cadit.com/blog/monday-evolve-singapore-2026" },
+        { title: "Lunch and Learn: AI work platform in action", url: "https://www.cadit.com/blog/lunch-learn-experience-the-best-ai-work-platform-in-action" }
+      ] },
+      { name: "Siemens", items: [
+        { title: "Siemens SLM (Service Lifecycle Management)", url: "https://cadituk.com/service-lifecycle-management/", desc: "CADIT UK" }
+      ] }
+    ]
+  }
+
+];
+
+// HOME TAB DATA. Edit links/notices here. Uses the ANSYS constants from resources.js.
+// tag shows on each card: PAGE (SharePoint), WEB (public site), DOC (file/template).
+const HOME = {
+  hero: "A centralized hub for CADIT and its partner resources, with direct links to their original SharePoint pages. Press / to search.",
+
+  quick: { title: "Quick access", note: "for everyone", items: [
+    { title: "Partner Portal", url: ANSYS.portal, desc: "Ansys Channel Partner Portal", tag: "PAGE" },
+    { title: "Training & Event Calendar", url: ANSYS.calendar, desc: "Upcoming partner sessions", tag: "PAGE" },
+    { title: "Vault", url: "https://vault.caditglobal.com", desc: "CADIT internal document repository", tag: "WEB" },
+    { title: "AnsysGPT", url: "https://ansysgpt.ansys.com/", desc: "Technical and simulation questions", tag: "WEB" },
+    { title: "Partner Certification", url: "https://webapps.ansys.com/partnerscertification/Profile/MyProfile", desc: "Ansys Partner Certification Program", tag: "WEB" },
+    { title: "Ansys Customer Portal", url: ANSYS.customerPortal, desc: "Customer support and downloads", tag: "WEB" },
+    { title: "Sales GPT", url: ANSYS.salesGPT, desc: "AI assistant for sales", tag: "WEB" },
+    { title: "CADIT Events", url: "https://events.caditglobal.com/", desc: "Upcoming and past events", tag: "WEB" }
+  ] },
+
+  // Department picker: the cards below change with the chosen department.
+  depts: [
+    { id: "sales", name: "Sales", items: [
+      { title: "Sales Tools", url: ANSYS.salesTools, desc: "Channel partner sales toolkit", tag: "PAGE" },
+      { title: "Deal Registration", url: ANSYS.dealReg, desc: "Guidelines and registration tool", tag: "PAGE" },
+      { title: "Ansys Pricing", url: ANSYS.pricing, desc: "Pricing and promotions", tag: "PAGE" },
+      { title: "Salesforce CRM", url: "https://synopsyspartners.sharepoint.com/sites/SellingatAnsys/SitePages/Salesforce-SFDC.aspx", desc: "Accounts, opportunities, customers", tag: "PAGE" },
+    ] },
+    { id: "technical", name: "Technical / Presales", items: [
+      { title: "Technical resources", url: "https://synopsyspartners.sharepoint.com/sites/cptrc", desc: "Technical Resource Center", tag: "PAGE" },
+      { title: "New & Emerging Technologies", url: "https://synopsyspartners.sharepoint.com/sites/cptt/SitePages/Information-on-New-Products.aspx", desc: "New product information", tag: "PAGE" },
+      { title: "Product Support", url: ANSYS.support, desc: "How to get product support", tag: "WEB" },
+    ] },
+    { id: "operations", name: "Operations", items: [
+      { title: "Deal Operations Home", url: "https://synopsyspartners.sharepoint.com/sites/DealOperations_Ansys/SitePages/Meet-the-Channel-Partner-Team.aspx", desc: "Channel partner deal team", tag: "PAGE" },
+      { title: "Order Processing Policy", url: "https://synopsyspartners.sharepoint.com/sites/DealOperations_Ansys/SitePages/Channel-Partner-Order-Processing-Policy.aspx", desc: "Channel partner orders", tag: "PAGE" },
+      { title: "Global Deal Desk", url: ANSYS.dealDesk, desc: "Deal and commercial support", tag: "PAGE" },
+      { title: "System Access", url: "https://synopsyspartners.sharepoint.com/sites/cpo/SitePages/System%20Access%20for%20Channel%20Partners.aspx", desc: "System access for channel partners", tag: "PAGE" },
+      { title: "Academic Program", url: ANSYS.academic, desc: "Academic licensing", tag: "PAGE" },
+      { title: "Startup Program", url: ANSYS.startup, desc: "Startup licensing", tag: "PAGE" }
+    ] },
+    { id: "marketing", name: "Marketing", items: [
+      { title: "Channel Marketing Resource Center", url: "https://synopsyspartners.sharepoint.com/sites/ChannelMarketingResourceCenter", desc: "Marketing center and contacts", tag: "PAGE" },
+      { title: "Ansys Logo & Icon Library", url: "https://synopsyspartners.sharepoint.com/sites/ChannelMarketingResourceCenter/SitePages/Ansys-Logo-+-Icon-Library.aspx", desc: "Approved logos and icons", tag: "PAGE" },
+      { title: "Partner Guidelines", url: "https://synopsyspartners.sharepoint.com/sites/ChannelMarketingResourceCenter/SitePages/Branding-Guidelines.aspx", desc: "MDF, branding, paid media", tag: "PAGE" },
+      { title: "CADIT Blog", url: "https://www.cadit.com/blog", desc: "News and articles", tag: "WEB" },
+      { title: "CADIT Events", url: "https://events.caditglobal.com/", desc: "Upcoming and past events", tag: "WEB" },
+      { title: "Company Brochures", url: "https://caditglobalcom-my.sharepoint.com/:b:/r/personal/haja_johana_cadit_com/Documents/CADIT%20Marketing/Marketing%20Materials/CADIT%20TH/Trifold%20brochure.pdf?d=w23e16a1ffdc44a279624aa86e95857ad&csf=1&web=1&e=YUGbg0", desc: "Trifold brochure (PDF)", tag: "DOC" }
+    ] }
+  ],
+
+  notices: [
+    { tag: "ACCESS", title: "Ansys links need a partner login", text: "Ansys pages sit on the Synopsys partner SharePoint. Ask the Ansys channel lead if your account cannot open them." },
+  ]
+};
+
+const tabsEl = document.getElementById("tabs");
+const content = document.getElementById("content");
+const search = document.getElementById("q");
+const parts = (location.hash || "#home").slice(1).split("/");
+let active = (parts[0] === "home" || HUB.some(p => p.id === parts[0])) ? parts[0] : "home";
+let section = parts[1] || "";
+
+function esc(s){ return String(s || "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+function linkHTML(it){
+  if (!it.url) return `<span class="title">${esc(it.title)}</span>`;
+  return it.url === "#"
+    ? `<span class="title">${esc(it.title)}</span><span class="todo">link to add</span>`
+    : `<a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a>`;
+}
+
+function itemHTML(it, open){
+  const desc = it.desc ? `<span class="desc">${esc(it.desc)}</span>` : "";
+  if (it.children && it.children.length) {
+    const kids = it.children.map(c => `<li>${linkHTML(c)}${c.desc ? `<span class="desc">${esc(c.desc)}</span>` : ""}</li>`).join("");
+    const own = (it.url && it.url !== "#") ? `<li class="own"><a href="${esc(it.url)}" target="_blank" rel="noopener">Open on website</a></li>` : "";
+    return `<li><details${open ? " open" : ""}><summary>${esc(it.title)}</summary>${desc}<ul class="sublist">${own}${kids}</ul></details></li>`;
+  }
+  return `<li>${linkHTML(it)}${desc}</li>`;
+}
+
+function groupHTML(g, items, open){
+  return `<section class="group"><h3>${esc(g.name)}</h3>${g.note ? `<p class="note">${esc(g.note)}</p>` : ""}<ul>${items.map(i => itemHTML(i, open)).join("")}</ul></section>`;
+}
+
+function cardHTML(it){
+  const inner = `<strong>${esc(it.title)}</strong>${it.desc ? `<span class="desc">${esc(it.desc)}</span>` : ""}`;
+  if (!it.url) return `<div class="card pending">${inner}</div>`;
+  if (it.url === "#") return `<div class="card pending">${inner}<span class="todo">link to add</span></div>`;
+  return `<a class="card" href="${esc(it.url)}" target="_blank" rel="noopener">${inner}</a>`;
+}
+
+function cardsHTML(block){
+  return `<h2 class="band">${esc(block.title)}</h2><div class="cards">${block.items.map(cardHTML).join("")}</div>`;
+}
+
+// every group of a partner, for search (plain groups, featured cards, sections, other cards)
+function partnerGroups(p){
+  const out = [];
+  if (p.featured) out.push({ g: { name: p.featured.title, items: p.featured.items }, ctx: p.name });
+  (p.groups || []).forEach(g => out.push({ g, ctx: p.name }));
+  (p.sections || []).forEach(s => s.groups.forEach(g => out.push({ g, ctx: p.name + " " + s.name })));
+  if (p.other) out.push({ g: { name: p.other.title, items: p.other.items }, ctx: p.name });
+  return out;
+}
+
+/* ---------------- HOME TAB ---------------- */
+function store(k, d){ try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } }
+function keep(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+let dept = store("hubDept", HOME.depts[0].id);
+let pins = store("hubPins", []);
+
+function countItems(p){
+  return partnerGroups(p).reduce((n, x) => n + x.g.items.reduce((m, i) => m + 1 + (i.children ? i.children.length : 0), 0), 0);
+}
+function allHomeItems(){
+  return HOME.quick.items.concat(...HOME.depts.map(d => d.items));
+}
+function hcardHTML(it){
+  const on = pins.includes(it.url);
+  return `<div class="hcard"><a href="${esc(it.url)}" target="_blank" rel="noopener"><span class="tag">${esc(it.tag || "PAGE")}</span><strong>${esc(it.title)}</strong><span class="desc">${esc(it.desc)}</span></a><button class="pin" data-pin="${esc(it.url)}" aria-pressed="${on}" aria-label="Pin ${esc(it.title)}" title="Pin">&#9733;</button></div>`;
+}
+function homeHTML(){
+  const now = new Date(), h = now.getHours();
+  const hello = h < 12 ? "Good morning!" : h < 18 ? "Good afternoon!" : "Good evening!";
+  const date = now.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).toUpperCase();
+  const d = HOME.depts.find(x => x.id === dept) || HOME.depts[0];
+  const pinned = allHomeItems().filter((it, i, a) => pins.includes(it.url) && a.findIndex(z => z.url === it.url) === i);
+  const total = HUB.reduce((n, p) => n + countItems(p), 0);
+  const chips = HOME.depts.map(x => `<button class="chip" data-dept="${x.id}" aria-pressed="${x.id === d.id}">${esc(x.name)}</button>`).join("");
+  const notices = HOME.notices.map(n => `<li><span class="ntag">${esc(n.tag)}</span><div><strong>${esc(n.title)}</strong><p>${esc(n.text)}</p></div></li>`).join("");
+  const partners = HUB.map(p => {
+    const tags = (p.sections || p.groups || []).slice(0, 4).map(x => `<span class="pill">${esc(x.name)}</span>`).join("");
+    return `<button class="pcard" data-go="${p.id}"><span class="pcount">${countItems(p)}</span><strong>${esc(p.name)}</strong><span class="desc">${esc(p.intro)}</span><span class="pills">${tags}</span></button>`;
+  }).join("");
+  return `<section class="hero"><p class="date">${date}</p><h2>${hello}</h2><p>${esc(HOME.hero)}</p></section>
+  <h2 class="band">${esc(HOME.quick.title)} <small>${esc(HOME.quick.note)}</small></h2>
+  <div class="hcards">${HOME.quick.items.map(hcardHTML).join("")}</div>
+  <h2 class="band">For your department</h2>
+  <div class="chips" role="group" aria-label="Department">${chips}</div>
+  <div class="hcards">${d.items.map(hcardHTML).join("")}</div>
+  <div class="duo">
+    <section class="panel"><h3>Your pins <span>${pinned.length}</span></h3>${pinned.length
+      ? `<ul class="pinlist">${pinned.map(it => `<li><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a><span class="desc">${esc(it.desc)}</span></li>`).join("")}</ul>`
+      : `<p class="desc">Star any resource above and it stays here for you. Pins are saved in this browser only.</p>`}</section>
+    <section class="panel"><h3>Notices <span>${HOME.notices.length}</span></h3><ul class="notices">${notices}</ul></section>
+  </div>
+  <h2 class="band">Partners <small>${total} resources</small></h2>
+  <div class="pcards">${partners}</div>`;
+}
+
+// q = current search text. While searching, no tab is marked as selected.
+function renderTabs(q){
+  const on = id => !q && id === active;
+  const homeTab = `<button class="tab" role="tab" aria-selected="${on("home")}" data-id="home">Home</button>`;
+  tabsEl.innerHTML = homeTab + HUB.map(p => `<button class="tab" role="tab" aria-selected="${on(p.id)}" data-id="${p.id}">${esc(p.name)} <span class="cnt">${countItems(p)}</span></button>`).join("");
+}
+
+function matches(text, q){ return String(text || "").toLowerCase().includes(q); }
+
+function filterItems(items, q, ctx){
+  const out = [];
+  items.forEach(it => {
+    const self = matches(it.title + " " + it.desc + " " + ctx, q);
+    const kids = (it.children || []).filter(c => matches(c.title + " " + c.desc, q));
+    if (self) out.push(it);
+    else if (kids.length) out.push(Object.assign({}, it, { children: kids }));
+  });
+  return out;
+}
+
+// Ansys-style sections: chips, first section open by default, no repeated heading
+function sectionHTML(p){
+  const s = (p.sections || []).find(x => x.id === section) || p.sections[0];
+  const title = p.sectionsTitle || "Explore";
+  const chips = p.sections.map(x => `<button class="chip" data-sec="${esc(x.id)}" aria-pressed="${x.id === s.id}">${esc(x.name)}</button>`).join("");
+  return `<h2 class="band">${esc(title)}</h2><div class="chips" role="group" aria-label="${esc(title)}">${chips}</div>`
+    + `<div class="secbody">${s.intro ? `<p class="intro">${esc(s.intro)}</p>` : ""}<div class="groups">${s.groups.map(g => groupHTML(g, g.items, false)).join("")}</div></div>`;
+}
+
+function render(){
+  const q = search.value.trim().toLowerCase();
+  renderTabs(q);
+  if (!q && active === "home") { content.innerHTML = homeHTML(); return; }
+  if (!q) {
+    const p = HUB.find(x => x.id === active);
+    const homeLinks = [].concat(p.home || [], p.homeExtra || []);
+    const home = homeLinks.length ? `<p class="btns">${homeLinks.map(h => h.url === "#"
+      ? `<span class="btn pending">${esc(h.title)} <span class="todo">link to add</span></span>`
+      : `<a class="btn" href="${esc(h.url)}" target="_blank" rel="noopener">${esc(h.title)}</a>`).join("")}</p>` : "";
+    const notice = p.notice ? `<p class="notice">${esc(p.notice)}</p>` : "";
+    let body;
+    if (p.sections) {
+      body = (p.featured ? cardsHTML(p.featured) : "") + sectionHTML(p) + (p.other ? cardsHTML(p.other) : "");
+    } else {
+      body = (p.featured ? cardsHTML(p.featured) : "")
+        + `<div class="groups">${p.groups.map(g => groupHTML(g, g.items, false)).join("")}</div>`;
+    }
+    content.innerHTML = `<p class="intro">${esc(p.intro)}</p>${home}${notice}${body}`;
+    return;
+  }
+  let html = "", found = 0;
+  HUB.forEach(p => {
+    const hits = partnerGroups(p).map(x => ({ g: x.g, items: filterItems(x.g.items, q, x.ctx + " " + x.g.name) })).filter(x => x.items.length);
+    if (hits.length) { found++; html += `<h2 class="partner-label">${esc(p.name)}</h2><div class="groups">${hits.map(h => groupHTML(h.g, h.items, true)).join("")}</div>`; }
+  });
+  content.innerHTML = found ? html : `<p class="empty">No resources match "${esc(q)}". Try a shorter word or clear the search.</p>`;
+}
+
+tabsEl.addEventListener("click", e => {
+  const b = e.target.closest(".tab"); if (!b) return;
+  active = b.dataset.id; section = ""; location.hash = active; search.value = ""; render();
+});
+// Section chips (Ansys tab): always one open, no toggle-off
+content.addEventListener("click", e => {
+  const b = e.target.closest("[data-sec]"); if (!b) return;
+  section = b.dataset.sec;
+  location.hash = active + "/" + section; render();
+});
+// Home tab clicks: department chips, pins, partner cards
+content.addEventListener("click", e => {
+  const c = e.target.closest("[data-dept]");
+  if (c) { dept = c.dataset.dept; keep("hubDept", dept); render(); return; }
+  const p = e.target.closest("[data-pin]");
+  if (p) { const u = p.dataset.pin; pins = pins.includes(u) ? pins.filter(x => x !== u) : pins.concat(u); keep("hubPins", pins); render(); return; }
+  const g = e.target.closest("[data-go]");
+  if (g) { active = g.dataset.go; section = ""; location.hash = active; render(); window.scrollTo(0, 0); }
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "/" && document.activeElement !== search) { e.preventDefault(); search.focus(); }
+});
+search.addEventListener("input", render);
+render();
+
+</script>
+</body>
+</html>
