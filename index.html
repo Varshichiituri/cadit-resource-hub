@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CADIT Resource Hub</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brandrow">
+      <div class="brand">
+        <img class="logo" src="files/logo.png" alt="CADIT" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'logo-text',textContent:'CADIT'}))">
+        <span class="brand-sep"></span>
+        <h1>Resource Hub</h1>
+      </div>
+      <label class="search">
+        <span class="sr">Search resources</span>
+        <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="q" type="search" placeholder="Search all resources, e.g. portal, learning, case study">
+      </label>
+    </div>
+    <p class="sub">CADIT and its partner resources.</p>
+  </div>
+  <nav class="wrap" aria-label="Sections"><div id="tabs" role="tablist"></div></nav>
+</header>
+<main class="wrap" id="content" tabindex="-1"></main>
+<footer class="wrap foot">Only approved, non-sensitive resources are published here.</footer>
+<script src="resources.js"></script>
+<script src="home.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
